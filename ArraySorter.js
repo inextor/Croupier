@@ -1,22 +1,22 @@
 class ArraySorter
 {
-	sort( a )
+	sort( a, aindex )
 	{
 		if( a.length  === 0 )
 			return a;
 
 		let keyValues = {};
 
-    	a.forEach((i)=>
-    	{
-    	    if( i in keyValues )
-    	    {
-    	        keyValues[ i ].counter++;
-    	        return;
+		a.forEach((i)=>
+		{
+			if( i[ aindex ] in keyValues )
+			{
+				keyValues[ i[aindex] ].counter++;
+				return;
 			}
 
-    	    keyValues[i] ={ value: i, counter: 1 };
-    	});
+			keyValues[ i[aindex] ] = { value: i, counter: 1 };
+		});
 
 		let keys = Object.keys( keyValues );
 
@@ -32,12 +32,10 @@ class ArraySorter
 
 		let maxRepeated = keyValues[ keys[0] ].counter;
 		let max			= a.length/maxRepeated;
+		let rest		=  a.length - maxRepeated;
+		let minDiv		= rest/(maxRepeated);
 
-		let rest	=  a.length - maxRepeated;
-
-		let minDiv = rest/(maxRepeated);
-
-		roundSize = Math.ceil( minDiv );
+		let roundSize = Math.ceil( minDiv );
 
 		if( Math.ceil( a.length/maxRepeated ) < keys.length )
 		{
@@ -105,3 +103,5 @@ class ArraySorter
 	}
 }
 
+
+module.exports = ArraySorter;
