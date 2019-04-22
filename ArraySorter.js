@@ -1,21 +1,22 @@
-class ArraySorter
+export default class ArraySorter
 {
-	sort( a, aindex )
+	sort( o_array, aindex )
 	{
-		if( a.length  === 0 )
-			return a;
+		if( o_array.length  === 0 )
+			return o_array;
 
 		let keyValues = {};
 
-		a.forEach((i)=>
+		o_array.forEach((i,index)=>
 		{
 			if( i[ aindex ] in keyValues )
 			{
 				keyValues[ i[aindex] ].counter++;
+				keyValues[ i[aindex] ].indexes.push( index );
 				return;
 			}
 
-			keyValues[ i[aindex] ] = { value: i, counter: 1 };
+			keyValues[ i[aindex] ] = { value: i, counter: 1, indexes: [index] };
 		});
 
 		let keys = Object.keys( keyValues );
@@ -31,15 +32,15 @@ class ArraySorter
 		keys.sort( sorter );
 
 		let maxRepeated = keyValues[ keys[0] ].counter;
-		let max			= a.length/maxRepeated;
-		let rest		=  a.length - maxRepeated;
+		let max			= o_array.length/maxRepeated;
+		let rest		=  o_array.length - maxRepeated;
 		let minDiv		= rest/(maxRepeated);
 
 		let roundSize = Math.ceil( minDiv );
 
-		if( Math.ceil( a.length/maxRepeated ) < keys.length )
+		if( Math.ceil( o_array.length/maxRepeated ) < keys.length )
 		{
-			roundSize = Math.ceil( a.length/maxRepeated );
+			roundSize = Math.ceil( o_array.length/maxRepeated );
 		}
 
 		if( roundSize > keys.length )
@@ -85,7 +86,7 @@ class ArraySorter
 
 			last = keys[ index ];
 
-			newArray.push( keyValues[ keys[ index ] ].value );
+			newArray.push( o_array[ keyValues[ keys[ index ] ].indexes.shift() ]);
 
 			keyValues[ keys[ index ] ].counter--;
 
@@ -102,6 +103,3 @@ class ArraySorter
 		return newArray;
 	}
 }
-
-
-module.exports = ArraySorter;
